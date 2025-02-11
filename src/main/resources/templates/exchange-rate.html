@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>匯率走勢圖</title>
+    <script src=https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <form id="exchangeType" name="exchangeType" method="get" action="/exchange-rate">
+        <select id="currency" name="currency" onchange="this.form.submit()">
+            <option value="">選擇匯率</option>
+            <option th:each="curr : ${currencies}"
+                    th:value="${curr.name()}"
+                    th:text="${curr.name()}"
+                    th:selected="${curr.name() == selectedCurr}"
+            ></option>
+        </select>
+    </form> 
+    <h2 class="text-center" th:text="${selectedCurr} +'/TWD 匯率走勢'"></h2>
+    
+    <canvas id="exchangeRateChart"></canvas>
+
+    <script th:inline="javascript">
+        var dates = [[${dates}]];
+        var rates = [[${rates}]];
+        var labels = dates;
+        var dataPoints = rates;
+
+        var ctx = document.getElementById('exchangeRateChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: "",
+                    data: dataPoints,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    pointRadius: 0,
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
