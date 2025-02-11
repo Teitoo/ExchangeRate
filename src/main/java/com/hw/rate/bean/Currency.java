@@ -1,5 +1,5 @@
 package com.hw.rate.bean;
 
 public enum Currency {
-	USD, RMB, JPY
+	USD, CNY, JPY, HKD, EUR
 }
