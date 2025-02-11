@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.hw.rate.bean.Currency;
 import com.hw.rate.bean.ExchangeRate;
@@ -20,8 +21,9 @@ public class ExchangeRateController {
 	private ExchangeRateService exchangeRateService;
 	
 	@GetMapping("")
-	public String showExchange(Model model) {
-		List<ExchangeRate> es = exchangeRateService.fetchExchangeRates(Currency.USD);
+	public String showExchange(@RequestParam(defaultValue = "USD") String currency, Model model) {
+		Currency selectedCurr = Currency.valueOf(currency);
+		List<ExchangeRate> es = exchangeRateService.fetchExchangeRates(selectedCurr);
 		
 		List<String> dates = new ArrayList<>();
 		List<Double> rates = new ArrayList<>();
@@ -29,6 +31,8 @@ public class ExchangeRateController {
 			dates.add(e.getDate());
 			rates.add(e.getRate());
 		});
+		model.addAttribute("selectedCurr", selectedCurr);
+		model.addAttribute("currencies", Currency.values());
 		model.addAttribute("dates", dates);
 		model.addAttribute("rates", rates);
 		
