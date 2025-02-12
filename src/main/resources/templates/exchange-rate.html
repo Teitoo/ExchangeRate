@@ -39,7 +39,14 @@
                     tension: 0.1,
                     pointRadius: 0,
                 }]
-            }
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 15,
+                        }}}}
         });
     </script>
 </body>
